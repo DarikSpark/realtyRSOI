@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load staticfiles %}
+    <meta charset="UTF-8">
+    <title></title>
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'app/css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+{% include "app/header.html" %}
+<div class="container">
+  {% if service_available %}
+{% if data %}
+  {{data}}
+{% endif %}
+<div style="margin-top: 50px; margin-left: 100px">
+  <form class="form-horizontal" action="/register/" method="POST">{% csrf_token %}
+    <fieldset>
+      <div id="legend">
+        <legend class="">Register</legend>
+      </div>
+
+      <div class="form-group">
+        <!-- Username -->
+        <label class="control-label"  for="username">Имя пользователя</label>
+        <input class="form-control"  type="text" id="username" name="username" placeholder="Имя пользователя">
+      </div>
+
+      <div class="form-group">
+        <!-- Password-->
+        <label class="control-label" for="password">Пароль</label>
+        <input class="form-control"  type="password" id="password" name="password" placeholder="Пароль">
+      </div>
+
+      <button class="btn btn-default" type="submit">Register</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  </div>
+  {% else %}
+    Сервис сессии временно недоступен.
+{% endif %}
+</div>
+</body>
+</html>

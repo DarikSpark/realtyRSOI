@@ -1,0 +1,25 @@
+<!-- Static navbar -->
+<nav class="navbar navbar-default navbar-static-top" style="background: #4FC3F7">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <!--<li class="active"><a href="#">Автомойки</a></li>-->
+        <li><a href="{% url 'index' %}"><strong>Квартиры</strong></a></li>
+        {% if is_logged %}<li><a href="{% url 'flat_my' %}"><strong>Мои квартиры</strong></a></li>{% endif %}
+      </ul>
+        <ul class="nav navbar-nav navbar-right">
+        {% if is_logged %}<li><a href="{% url 'logout' %}"><strong>Выйти</strong></a></li>
+        {% else %}<li><a href="{% url 'login' %}"><strong>Войти</strong></a></li>
+        <li><a href="{% url 'register' %}"><strong>Регистрация</strong></a></li>{% endif %}
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>

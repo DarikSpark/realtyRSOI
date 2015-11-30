@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>{% load staticfiles %}
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/jquery-ui.css' %}" />
+    <style type="text/css">
+        #map { height: 100%; width: 100% }
+        body{
+            font: 62.5% "Trebuchet MS", sans-serif;
+            margin: 50px;
+        }
+        /*.demoHeaders {*/
+            /*margin-top: 2em;*/
+        /*}*/
+    </style>
+
+    <script src="{% static 'app/js/jquery.js' %}"></script>
+    <script src="{% static 'app/js/jquery-ui.js' %}"></script>
+
+     <!-- Bootstrap core CSS -->
+    <link href="{% static 'app/css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    {% for flat in flat_list %}
+        <flat data-id="{{flat.id}}"
+                 data-name="{{flat.name}}"
+                 data-latitude="{{flat.latitude}}"
+                 data-longitude="{{flat.longitude}}" />
+    {% endfor %}
+
+    {% include "app/header.html" %}
+
+<div class="container">
+    <!-- Tabs -->
+    <div id="tabs">
+        <!-- <ul>
+            <li><a href="#tabs-1">На карте</a></li>
+            <li><a href="#tabs-2">Квартиры списком</a></li>
+        </ul> -->
+        <div class="col-md-3 container" id="tabs-2">
+            {% if service_available %}
+            {% if flat_list %}
+
+            <table class="table table-hover">
+
+            <!-- <ul> -->
+                <tr>
+                    <th>Квартира</th>
+                    <!-- <th>Комнат</th> -->
+                    <th>руб/сутки</th>
+                </tr>
+
+                {% for flat in flat_list %}
+                    <!--<li><a href="/flat/{{ flat.id }}/">{{ flat.name }}</a></li>-->
+                    <!-- <li> -->
+
+                    <tr>
+                    <td>
+                    <a href="{% url 'flat_detail' flat.id %}">{{ flat.name }}</a>
+                    </td>
+                    <!-- <td>4</td> -->                                          
+                    <td>
+                        {{ flat.cost }}
+                    </td>
+                    </tr>
+
+                    <!-- </li> -->
+                {% endfor %}
+                <!-- </ul> -->
+            </table>
+
+
+<!-- 
+                <ul>
+                {% for flat in flat_list %} -->
+                    <!--<li><a href="/flat/{{ flat.id }}/">{{ flat.name }}</a></li>-->
+                  <!--   <li><a href="{% url 'flat_detail' flat.id %}">{{ flat.name }}</a></li>
+                {% endfor %}
+                </ul> -->
+            {% else %}
+                <p>No any flats are available.</p>
+            {% endif %}
+
+            {% else %}
+                Сервис квартир временно недоступен.
+            {% endif %}
+        </div>
+    </div>
+
+        <div class="col-md-9 container" id="tabs-1" style="height: 500px">
+            <div id="map"></div>
+        </div>
+
+
+    <!--<button onclick="addMarkerToMap(34.0, 57.0, 'bla-bla')">Click me</button>-->
+
+    </div>
+
+    // <script>
+    //     $( "#tabs" ).tabs();
+    // </script>
+
+    <script type="text/javascript">
+        var map;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 55.7522222, lng: 37.6155556 },
+                zoom: 12
+            });
+
+//            var locations = [
+//                ['Аэропорт', 55.79981, 37.53412],
+//                ['Академическая', 55.68808, 37.57501],
+//                ['Алексеевская', 55.80737, 37.63844],
+//                ['Александровский сад', 55.75219, 37.60836],
+//                ['Алтуфьево', 55.89504, 37.58605]
+//            ];
+//
+//            var infowindow = new google.maps.InfoWindow();
+//
+//            for (var i = 0; i < locations.length; i++) {
+//                var marker = new google.maps.Marker({
+//                    position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+//                    map: map
+//                });
+//
+//                google.maps.event.addListener(marker, 'click', (function(marker, i) {
+//                    return function() {
+//                        infowindow.setContent(locations[i][0]);
+//                        infowindow.open(map, marker);
+//                    }
+//                }) (marker, i));
+//            }
+
+            var infowindow = new google.maps.InfoWindow();
+
+            var flatList = document.getElementsByTagName('flat');
+            for (var j = 0; j < flatList.length; j++) {
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(flatList[j].dataset.latitude, flatList[j].dataset.longitude),
+                    map: map
+                });
+
+                google.maps.event.addListener(marker, 'click', (function(marker, j) {
+                    return function() {
+                        //infowindow.setContent(flatList[j].dataset.name);
+                        infowindow.setContent('<a href="/flat/' + flatList[j].dataset.id +
+                                '/">' + flatList[j].dataset.name + '</a>');
+                        infowindow.open(map, marker);
+                    }
+                }) (marker, j));
+            }
+        }
+    </script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?callback=initMap"></script>
+</body>
+</html>

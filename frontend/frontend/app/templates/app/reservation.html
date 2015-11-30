@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>{% load staticfiles %}
+    <meta charset="UTF-8">
+    <title></title>
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'app/css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+{% include "app/header.html" %}
+{% if data %}
+  {{data}}
+{% endif %}
+    <div class="container">
+        {% if service_available %}
+        <form class="form-horizontal" action="" method="post">{% csrf_token %}
+            <fieldset>
+              <div id="legend">
+                <legend class="">Бронирование квартиры</legend>
+              </div>
+              <div class="form-group">
+                <label class="control-label"  for="date">Дата приезда</label>
+                  <input class="form-control" type="text" id="date" name="date" placeholder="2015-01-01">
+              </div>
+
+              <div class="form-group">
+                <label class="control-label"  for="busy_from">Время приезда</label>
+                  <input class="form-control" type="text" id="busy_from" name="busy_from" placeholder="09:00" >
+              </div>
+
+              <div class="form-group">
+                <label class="control-label"  for="date_to">Дата отъезда</label>
+                  <input class="form-control" type="text" id="date_to" name="date_to" placeholder="2015-01-10">
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="busy_to">Время отъезда</label>
+                  <input class="form-control" type="text" id="busy_to" name="busy_to" placeholder="12:00">
+              </div>
+
+              
+                  <button class="btn btn-default" type="submit">Забронировать</button>
+               
+            </fieldset>
+          </form>
+        {% else %}
+            Сервис бронирования временно недоступен.
+        {% endif %}
+    </div>
+</body>
+</html>
